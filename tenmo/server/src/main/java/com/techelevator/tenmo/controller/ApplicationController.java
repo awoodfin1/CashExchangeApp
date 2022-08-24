@@ -1,0 +1,37 @@
+package com.techelevator.tenmo.controller;
+
+import com.techelevator.tenmo.dao.AccountDao;
+import com.techelevator.tenmo.dao.UserDao;
+import com.techelevator.tenmo.model.Account;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.math.BigDecimal;
+import java.security.Principal;
+
+@RestController
+@PreAuthorize("isAuthenticated()")
+public class ApplicationController {
+    @Autowired
+    private AccountDao accountDao;
+    @Autowired
+    private UserDao userDao;
+
+    public ApplicationController(AccountDao accountDao, UserDao userDao) {
+        this.accountDao = accountDao;
+        this.userDao = userDao;
+    }
+
+    @GetMapping("/balance/")
+    public BigDecimal getBalance(Principal principal) {
+        BigDecimal balance = accountDao.getBalance(id);
+        // getUserAccountByUserPrincipal(principal.getName)
+         // string sql account id balance join user table where username = ? (principal.getname)
+        // Account.getBalance
+        return balance;
+    }
+}
