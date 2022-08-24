@@ -18,21 +18,21 @@ public class JdbcAccountDao implements AccountDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-//    @Override
-//    public BigDecimal getBalance(int userId) {
-//        String sql = "SELECT balance FROM account where user_id = ?";
-//        SqlRowSet results = null;
-//        BigDecimal balance = null;
-//        try {
-//            results = jdbcTemplate.queryForRowSet(sql, userId);
-//            if (results.next()) {
-//                balance = results.getBigDecimal("balance");
-//            }
-//        } catch (DataAccessException e) {
-//            System.out.println("Error accessing data.");
-//        }
-//        return balance;
-//    }
+    @Override
+    public BigDecimal getBalance(int userId) {
+        String sql = "SELECT balance FROM account where user_id = ?";
+        SqlRowSet results = null;
+        BigDecimal balance = null;
+        try {
+            results = jdbcTemplate.queryForRowSet(sql, userId);
+            if (results.next()) {
+                balance = results.getBigDecimal("balance");
+            }
+        } catch (DataAccessException e) {
+            System.out.println("Error accessing data.");
+        }
+        return balance;
+    }
 
 //    @Override
 //    public Account getAnAccountByUserPrincipal(int userId) {
