@@ -15,10 +15,9 @@ import java.security.Principal;
 
 @RestController
 @PreAuthorize("isAuthenticated()")
+@RequestMapping("/account")
 public class ApplicationController {
-    @Autowired
     private AccountDao accountDao;
-    @Autowired
     private UserDao userDao;
 
     public ApplicationController(AccountDao accountDao, UserDao userDao) {
@@ -26,12 +25,19 @@ public class ApplicationController {
         this.userDao = userDao;
     }
 
-    @GetMapping("/balance/")
+    @GetMapping("/balance")
     public BigDecimal getBalance(Principal principal) {
-        BigDecimal balance = accountDao.getBalance(id);
+        int userId = getCurrentUserId(principal);
+        BigDecimal balance = accountDao.getAnAccountByUserId(userId).getBalance();
         // getUserAccountByUserPrincipal(principal.getName)
          // string sql account id balance join user table where username = ? (principal.getname)
         // Account.getBalance
         return balance;
     }
+
+    public int getCurrentUserId (Principal principal) {
+        return userDao.findByUsername(principal.getName()).getId();
+    }
+
+
 }
