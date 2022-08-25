@@ -36,34 +36,14 @@ public class JdbcAccountDao implements AccountDao {
 
     @Override
     public boolean transferFunds(Transfer transfer, int userSendId, int userReceiveId) {
-        Account account = new Account();
         BigDecimal transferAmount = new BigDecimal(String.valueOf(transfer.getAmount()));
         String sql = "SELECT user_id FROM tenmo_user WHERE username = ?";
         Integer senderId = jdbcTemplate.queryForObject(sql, Integer.class);
-
-        assert senderId != null;
         if (!senderId.equals(senderId)) {
-            account = getAnAccountByUserId(userSendId);
-            //BigDecimal currentBalance = new BigDecimal(String.valueOf(account.getBalance()));
-            //BigDecimal updatedSendBalance = new BigDecimal(String.valueOf(currentBalance.subtract(transferAmount)));
-            String fromSql = "UPDATE account SET balance - ? WHERE account_id = ?";
+            String fromSql = "UPDATE account SET balance = balance - ? WHERE user_id = ?";
             jdbcTemplate.update(fromSql, transferAmount, userSendId);
-
-            account = getAnAccountByUserId(userReceiveId);
-            //BigDecimal receiversCurrentBalance = account.getBalance();
-
-            String toSql = "UPDATE account SET balance + ? WHERE account_id = ?";
+            String toSql = "UPDATE account SET balance = balance + ? WHERE user_id = ?";
             jdbcTemplate.update(toSql, transferAmount, userReceiveId);
-
-
-
-
-//            try (SqlRowSet fromSql = jdbcTemplate.queryForRowSet(fromSql, transferAmount, account.getAccountId());
-//                 SqlRowSet toSql = jdbcTemplate.queryForRowSet(toSql, transferAmount, account.getAccountId())) {
-//
-//            } catch (DataAccessException e) {
-//                return false;
-//            }
         }
         return false;
     }
@@ -72,13 +52,12 @@ public class JdbcAccountDao implements AccountDao {
     public Account getAnAccountByUserId(int userId) {
         Account account = null;
         String sql = "SELECT * FROM account WHERE user_id = ?";
-
-        try{
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
-        while(results.next()) {
-            account = mapToRowAccount(results);
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
+            while (results.next()) {
+                account = mapToRowAccount(results);
             }
-        }catch (DataAccessException e) {
+        } catch (DataAccessException e) {
             System.out.println("Error accessing data.");
         }
         return account;
@@ -89,12 +68,12 @@ public class JdbcAccountDao implements AccountDao {
         Account account = null;
         String sql = "SELECT * FROM account WHERE account_id = ?";
 
-        try{
+        try {
             SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountId);
-            while(results.next()) {
+            while (results.next()) {
                 account = mapToRowAccount(results);
             }
-        }catch (DataAccessException e) {
+        } catch (DataAccessException e) {
             System.out.println("Error accessing data.");
         }
         return account;

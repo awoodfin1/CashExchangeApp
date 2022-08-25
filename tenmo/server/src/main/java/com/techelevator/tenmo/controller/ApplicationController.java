@@ -34,7 +34,6 @@ public class ApplicationController {
         return balance;
     }
 
-
     public int getCurrentUserId(Principal principal) {
         return userDao.findByUsername(principal.getName()).getId();
     }
@@ -46,8 +45,9 @@ public class ApplicationController {
     }
 
     @PutMapping("/transfer")
-    public void transferFunds(@RequestBody Transfer transfer, @PathVariable int userSendId, @PathVariable int userReceiveId) {
-       accountDao.transferFunds(transfer, userSendId, userReceiveId);
+    public void transferFunds(@RequestBody Transfer transfer, Principal principal) {
+        int userId = getCurrentUserId(principal);
+       accountDao.transferFunds(transfer, userId, transfer.getUserTo());
     }
 
 }
