@@ -41,20 +41,9 @@ public class ApplicationController {
     @GetMapping("/tenmo_user/username")
     public List<User> listUsers() {
         List<User> users = userDao.findAll();  //Returning too much information???
-
         return users;
     }
 
-    @PutMapping("/transfer")
-    public boolean transferFunds() {
-        if (userId != userId)
-            String fromSql = "UPDATE account SET balance - ? WHERE account_id = ?";
-        String toSql = "UPDATE account SET balance + ? WHERE account_id = ?";
+    //@PutMapping("/transfer")
 
-        try (SqlRowSet fromSql = jdbcTemplate.queryForRowSet(fromSql, amount, accountId);
-             SqlRowSet toSql = jdbcTemplate.queryForRowSet(toSql, amount, accountId)) {
-        }
-
-        return false;
-    }
 }

@@ -36,6 +36,19 @@ public class JdbcAccountDao implements AccountDao {
 
 
     @Override
+    public boolean transferFunds() {
+        if (userId != userId)
+            String fromSql = "UPDATE account SET balance - ? WHERE account_id = ?";
+        String toSql = "UPDATE account SET balance + ? WHERE account_id = ?";
+
+        try (SqlRowSet fromSql = jdbcTemplate.queryForRowSet(fromSql, amount, accountId);
+             SqlRowSet toSql = jdbcTemplate.queryForRowSet(toSql, amount, accountId)) {
+        }
+
+        return false;
+    }
+
+    @Override
     public Account getAnAccountByUserId(int userId) {
         Account account = null;
         String sql = "SELECT * FROM account WHERE user_id = ?";
