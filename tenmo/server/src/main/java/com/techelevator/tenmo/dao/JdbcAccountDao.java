@@ -1,14 +1,13 @@
 package com.techelevator.tenmo.dao;
 
 import com.techelevator.tenmo.model.Account;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.techelevator.tenmo.model.Transfer;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.security.Principal;
 
 @Component
 public class JdbcAccountDao implements AccountDao {
@@ -36,15 +35,36 @@ public class JdbcAccountDao implements AccountDao {
 
 
     @Override
-    public boolean transferFunds() {
-        if (userId != userId)
+    public boolean transferFunds(Transfer transfer, int userSendId, int userReceiveId) {
+        Account account = new Account();
+        BigDecimal transferAmount = new BigDecimal(String.valueOf(transfer.getAmount()));
+        String sql = "SELECT user_id FROM tenmo_user WHERE username = ?";
+        Integer senderId = jdbcTemplate.queryForObject(sql, Integer.class);
+
+        assert senderId != null;
+        if (!senderId.equals(senderId)) {
+            account = getAnAccountByUserId(userSendId);
+            //BigDecimal currentBalance = new BigDecimal(String.valueOf(account.getBalance()));
+            //BigDecimal updatedSendBalance = new BigDecimal(String.valueOf(currentBalance.subtract(transferAmount)));
             String fromSql = "UPDATE account SET balance - ? WHERE account_id = ?";
-        String toSql = "UPDATE account SET balance + ? WHERE account_id = ?";
+            jdbcTemplate.update(fromSql, transferAmount, userSendId);
 
-        try (SqlRowSet fromSql = jdbcTemplate.queryForRowSet(fromSql, amount, accountId);
-             SqlRowSet toSql = jdbcTemplate.queryForRowSet(toSql, amount, accountId)) {
+            account = getAnAccountByUserId(userReceiveId);
+            //BigDecimal receiversCurrentBalance = account.getBalance();
+
+            String toSql = "UPDATE account SET balance + ? WHERE account_id = ?";
+            jdbcTemplate.update(toSql, transferAmount, userReceiveId);
+
+
+
+
+//            try (SqlRowSet fromSql = jdbcTemplate.queryForRowSet(fromSql, transferAmount, account.getAccountId());
+//                 SqlRowSet toSql = jdbcTemplate.queryForRowSet(toSql, transferAmount, account.getAccountId())) {
+//
+//            } catch (DataAccessException e) {
+//                return false;
+//            }
         }
-
         return false;
     }
 

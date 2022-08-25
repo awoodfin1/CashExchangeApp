@@ -3,6 +3,7 @@ package com.techelevator.tenmo.controller;
 import com.techelevator.tenmo.dao.AccountDao;
 import com.techelevator.tenmo.dao.UserDao;
 import com.techelevator.tenmo.model.Account;
+import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.object.SqlCall;
@@ -40,10 +41,13 @@ public class ApplicationController {
 
     @GetMapping("/tenmo_user/username")
     public List<User> listUsers() {
-        List<User> users = userDao.findAll();  //Returning too much information???
+        List<User> users = userDao.findAll();
         return users;
     }
 
-    //@PutMapping("/transfer")
+    @PutMapping("/transfer")
+    public void transferFunds(@RequestBody Transfer transfer) {
+        accountDao.transferFunds(transfer, us)
+    }
 
 }
