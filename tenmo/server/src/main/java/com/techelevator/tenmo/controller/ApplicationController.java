@@ -5,11 +5,10 @@ import com.techelevator.tenmo.dao.UserDao;
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.object.SqlCall;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.security.Principal;
@@ -17,7 +16,7 @@ import java.util.List;
 
 @RestController
 @PreAuthorize("isAuthenticated()")
-@RequestMapping("/account")
+
 public class ApplicationController {
     private AccountDao accountDao;
     private UserDao userDao;
@@ -27,7 +26,7 @@ public class ApplicationController {
         this.userDao = userDao;
     }
 
-    @GetMapping("/balance")
+    @GetMapping("/account/balance")
     public BigDecimal getBalance(Principal principal) {
         int userId = getCurrentUserId(principal);
         BigDecimal balance = accountDao.getAnAccountByUserId(userId).getBalance();
@@ -41,7 +40,21 @@ public class ApplicationController {
 
     @GetMapping("/tenmo_user/username")
     public List<User> listUsers() {
-        List<User> users = userDao.findAll();
+        List<User> users = userDao.findAll();  //Returning too much information???
+
         return users;
+    }
+
+    @PutMapping("/transfer")
+    public boolean transferFunds() {
+        if (userId != userId)
+            String fromSql = "UPDATE account SET balance - ? WHERE account_id = ?";
+        String toSql = "UPDATE account SET balance + ? WHERE account_id = ?";
+
+        try (SqlRowSet fromSql = jdbcTemplate.queryForRowSet(fromSql, amount, accountId);
+             SqlRowSet toSql = jdbcTemplate.queryForRowSet(toSql, amount, accountId)) {
+        }
+
+        return false;
     }
 }
