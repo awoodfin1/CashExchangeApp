@@ -55,14 +55,16 @@ CREATE TABLE transfer
 COMMIT;
 
 
--- INSERT INTO tenmo_user (user_id, username, password_hash) VALUES (1001, 'user1', 'pass1');
--- INSERT INTO tenmo_user (user_id, username, password_hash) VALUES (1002, 'user2', 'pass2');
--- INSERT INTO tenmo_user (user_id, username, password_hash) VALUES (1003, 'user3', 'pass3');
--- INSERT INTO tenmo_user (user_id, username, password_hash) VALUES (1004, 'user4', 'pass4');
--- INSERT INTO tenmo_user (user_id, username, password_hash) VALUES (1005, 'user5', 'pass5');
---
--- INSERT INTO account (account_id, user_id, balance) VALUES (2001, 1001, 1000);
+-- INSERT INTO tenmo_user (user_id, username, password_hash) VALUES (1002, 'user1', 'pass1');
+-- INSERT INTO tenmo_user (user_id, username, password_hash) VALUES (1003, 'user2', 'pass2');
+-- INSERT INTO tenmo_user (user_id, username, password_hash) VALUES (1004, 'user4', 'pass3');
+-- INSERT INTO tenmo_user (user_id, username, password_hash) VALUES (1005, 'user5', 'pass4');
+-- INSERT INTO tenmo_user (user_id, username, password_hash) VALUES (1006, 'user6', 'pass5');
+
 -- INSERT INTO account (account_id, user_id, balance) VALUES (2002, 1002, 1000);
 -- INSERT INTO account (account_id, user_id, balance) VALUES (2003, 1003, 1000);
 -- INSERT INTO account (account_id, user_id, balance) VALUES (2004, 1004, 1000);
 -- INSERT INTO account (account_id, user_id, balance) VALUES (2005, 1005, 1000);
+-- INSERT INTO account (account_id, user_id, balance) VALUES (2006, 1006, 1000);
+
+Select * FROM tenmo_user

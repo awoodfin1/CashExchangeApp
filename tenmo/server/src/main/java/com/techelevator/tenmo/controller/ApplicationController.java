@@ -46,8 +46,8 @@ public class ApplicationController {
     }
 
     @PutMapping("/transfer")
-    public void transferFunds(@RequestBody Transfer transfer) {
-        accountDao.transferFunds(transfer, us)
+    public void transferFunds(@RequestBody Transfer transfer, @PathVariable int userSendId, @PathVariable int userReceiveId) {
+       accountDao.transferFunds(transfer, userSendId, userReceiveId);
     }
 
 }
