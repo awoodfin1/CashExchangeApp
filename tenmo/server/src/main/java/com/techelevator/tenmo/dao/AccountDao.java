@@ -10,7 +10,6 @@ public interface AccountDao {
 
     Account getAnAccountByUserId(int userId);
 
-    //Account getAnAccountByUserPrincipal(int userId);
 
     Account getAccountById(int id);
 }

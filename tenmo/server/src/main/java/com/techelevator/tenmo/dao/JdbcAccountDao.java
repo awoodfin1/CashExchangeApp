@@ -34,20 +34,6 @@ public class JdbcAccountDao implements AccountDao {
         return balance;
     }
 
-//    @Override
-//    public Account getAnAccountByUserPrincipal(int userId) {
-//        Account account = null;
-//        String sql = "SELECT account_id, balance FROM account JOIN tenmo_user ON ";
-//        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
-//        if(results.next()) {
-//            account = mapToRowAccount(results);
-//        // getUserAccountByUserPrincipal(principal.getName)
-//        // string sql account id balance join user table where username = ? (principal.getname)
-//        // Account.getBalance
-//        return Account.getBalance;
-//        }
-//
-//    }
 
     @Override
     public Account getAnAccountByUserId(int userId) {
