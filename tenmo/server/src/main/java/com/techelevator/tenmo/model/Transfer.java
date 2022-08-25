@@ -8,6 +8,7 @@ public class Transfer {
     private int userTo;
     private BigDecimal amount;
 
+    public Transfer() {}
 
     public Transfer(int transferId, int userFrom, int userTo, BigDecimal amount) {
         this.transferId = transferId;

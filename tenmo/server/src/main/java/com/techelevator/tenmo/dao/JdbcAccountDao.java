@@ -34,19 +34,7 @@ public class JdbcAccountDao implements AccountDao {
     }
 
 
-    @Override
-    public boolean transferFunds(Transfer transfer, int userSendId, int userReceiveId) {
-        BigDecimal transferAmount = new BigDecimal(String.valueOf(transfer.getAmount()));
-        String sql = "SELECT user_id FROM tenmo_user WHERE username = ?";
-        Integer senderId = jdbcTemplate.queryForObject(sql, Integer.class);
-        if (!senderId.equals(senderId)) {
-            String fromSql = "UPDATE account SET balance = balance - ? WHERE user_id = ?";
-            jdbcTemplate.update(fromSql, transferAmount, userSendId);
-            String toSql = "UPDATE account SET balance = balance + ? WHERE user_id = ?";
-            jdbcTemplate.update(toSql, transferAmount, userReceiveId);
-        }
-        return false;
-    }
+
 
     @Override
     public Account getAnAccountByUserId(int userId) {

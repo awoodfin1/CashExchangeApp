@@ -43,11 +43,12 @@ public class ApplicationController {
         List<User> users = userDao.findAll();
         return users;
     }
-
-    @PutMapping("/transfer")
-    public void transferFunds(@RequestBody Transfer transfer, Principal principal) {
-        int userId = getCurrentUserId(principal);
-       accountDao.transferFunds(transfer, userId, transfer.getUserTo());
-    }
+//
+//    @PutMapping("/transfer")
+//    public void transferFunds(@RequestBody Transfer transfer, Principal principal) {
+//        //int userFromId = getCurrentUserId(principal.getName());
+//        transfer.setUserFrom(principal.getName());
+//       transferDao.transferFunds(transfer, userId, transfer.getUserTo());
+//    }
 
 }
