@@ -29,13 +29,13 @@ public class TransferController {
     @RequestMapping(path = "/transfer", method = RequestMethod.POST)
     public Transfer transferFunds(@RequestBody Transfer transfer, Principal principal) {
         transfer.setUserFrom(userDao.findIdByUsername(principal.getName()));
-    Transfer postedTransfer = transferDao.newTransfer(transfer);
-    int userFromId = userDao.findIdByUsername(principal.getName());
-    int userToId = userDao.findIdByUsername(String.valueOf(postedTransfer.getTransferId()));
-    BigDecimal amount = postedTransfer.getAmount();
-        transferDao.transferFunds(amount,userFromId,userToId);
+        Transfer postedTransfer = transferDao.newTransfer(transfer);
+        int userFromId = userDao.findIdByUsername(principal.getName());
+        int userToId = userDao.findIdByUsername(String.valueOf(postedTransfer.getTransferId()));
+        BigDecimal amount = postedTransfer.getAmount();
+        transferDao.transferFunds(amount, userFromId, userToId);
         return postedTransfer;
-}
+    }
 
 
 }
