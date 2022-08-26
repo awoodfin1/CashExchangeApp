@@ -102,4 +102,6 @@ public class JdbcAccountDao implements AccountDao {
         account.setUserId(result.getInt("user_id"));
         return account;
     }
+
+    
 }
