@@ -30,26 +30,7 @@ public class JdbcTransferDao implements TransferDao {
         return transfer;
     }
 
-    @Override
-    public boolean transferFunds(BigDecimal amount, int userSendId, int userReceiveId) {
-//        Account account = new Account();
-//        account = getAnAccountByUserId(userSendId);
-//        account.getBalance(); //compare to amountBeingSent
-        String sql = "SELECT user_id FROM tenmo_user WHERE username = ?";
-        Integer senderId = jdbcTemplate.queryForObject(sql, Integer.class);
-        String sql1 = "SELECT user_id FROM tenmo_user WHERE username = ?";
-        Integer receiverId = jdbcTemplate.queryForObject(sql1, Integer.class);
-        // balance doesnt equal 0 , senderid doesnt equal userid
-        if (!senderId.equals(receiverId) ) { //&& account.getBalance.compareTo(amount)> 0
 
-            String fromSql = "UPDATE account SET balance = balance - ? WHERE user_id = ?";
-            jdbcTemplate.update(fromSql, amount, userSendId);
-            String toSql = "UPDATE account SET balance = balance + ? WHERE user_id = ?";
-            jdbcTemplate.update(toSql, amount, userReceiveId);
-        }
-        return false;
-    }
-    
 
 
     @Override

@@ -23,17 +23,17 @@ public class TransferController {
     @Autowired
     UserDao userDao;
     @Autowired
+    AccountDao accountDao;
+    @Autowired
     TransferDao transferDao;
 
 
     @RequestMapping(path = "/transfer", method = RequestMethod.POST)
-    public Transfer transferFunds(@RequestBody Transfer transfer, Principal principal) {
-        transfer.setUserFrom(userDao.findIdByUsername(principal.getName()));
+    public Transfer transferFunds(@RequestBody Transfer transfer) {
+
         Transfer postedTransfer = transferDao.newTransfer(transfer);
-        int userFromId = userDao.findIdByUsername(principal.getName());
-        int userToId = userDao.findIdByUsername(String.valueOf(postedTransfer.getTransferId()));
-        BigDecimal amount = postedTransfer.getAmount();
-        transferDao.transferFunds(amount, userFromId, userToId);
+
+        accountDao.transferFunds(transfer);
         return postedTransfer;
     }
 

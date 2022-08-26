@@ -9,7 +9,7 @@ public interface TransferDao {
 
     public Transfer getTransferByTransferId(int transferId);
 
-    boolean transferFunds(BigDecimal amount, int userSendId, int userReceiveId);
+
 
     public Transfer newTransfer(Transfer transfer);
 

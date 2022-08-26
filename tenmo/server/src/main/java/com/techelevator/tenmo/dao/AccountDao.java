@@ -9,7 +9,7 @@ public interface AccountDao {
 
     BigDecimal getBalance(int userId);
 
-
+    boolean transferFunds(Transfer transfer);
 
     Account getAnAccountByUserId(int userId);
 

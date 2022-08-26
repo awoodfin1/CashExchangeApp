@@ -33,6 +33,34 @@ public class JdbcAccountDao implements AccountDao {
         return balance;
     }
 
+    @Override
+    public boolean transferFunds(Transfer transfer) {
+        BigDecimal senderBalance = getBalanceByAccountNumber(transfer.getUserFrom());
+
+        if (transfer.getUserFrom() != transfer.getUserTo() && senderBalance.compareTo(transfer.getAmount()) >= 0) {
+
+            String fromSql = "UPDATE account SET balance = balance - ? WHERE account_id = ?";
+            jdbcTemplate.update(fromSql, transfer.getAmount(), transfer.getUserFrom());
+            String toSql = "UPDATE account SET balance = balance + ? WHERE account_id = ?";
+            jdbcTemplate.update(toSql, transfer.getAmount(), transfer.getUserTo());
+        }
+        return false;
+    }
+
+    public BigDecimal getBalanceByAccountNumber(int accountId) {
+        String sql = "SELECT balance FROM account WHERE account_id = ?";
+        SqlRowSet results = null;
+        BigDecimal balance = null;
+        try {
+            results = jdbcTemplate.queryForRowSet(sql, accountId);
+            if (results.next()) {
+                balance = results.getBigDecimal("balance");
+            }
+        } catch (DataAccessException e) {
+            System.out.println("Error accessing data.");
+        }
+        return balance;
+    }
 
 
 
