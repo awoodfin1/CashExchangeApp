@@ -27,7 +27,7 @@ public class JdbcTransferDao implements TransferDao {
         Transfer transfer = null;
         if (result.next()) {
             transfer = mapToRowTransfer(result);
-        }else {
+        } else {
             throw new RuntimeException("Transfer not found.");
         }
         return transfer;
@@ -38,19 +38,23 @@ public class JdbcTransferDao implements TransferDao {
         int userFrom = transfer.getUserFrom();
         int userTo = transfer.getUserTo();
         BigDecimal amount = transfer.getAmount();
-        BigDecimal senderBalance = jdbcAccountDao.getBalanceByAccountNumber(transfer.getUserFrom());
-        if (transfer.getUserFrom() != transfer.getUserTo() && senderBalance.compareTo(transfer.getAmount()) >= 0) {
-            String sql = "INSERT INTO transfer (account_from, account_to, amount) "
-                    + "VALUES (?,?,?) RETURNING transfer_id";
-            int id = jdbcTemplate.queryForObject(sql, Integer.class, userFrom, userTo, amount);
-            return getTransferByTransferId(id);
-        } else {
-            String sql = "INSERT INTO transfer (account_from, account_to, amount, transfer_status) "
-                    + "VALUES (?,?,?,'Rejected') RETURNING transfer_id";
-            int id = jdbcTemplate.queryForObject(sql, Integer.class, userFrom, userTo, amount);
-            return getTransferByTransferId(id);
-        }
+//        BigDecimal senderBalance = jdbcAccountDao.getBalanceByAccountNumber(transfer.getUserFrom());
+//        if (transfer.getUserFrom() != transfer.getUserTo() && senderBalance.compareTo(transfer.getAmount()) >= 0) {
+        String sql = "INSERT INTO transfer (account_from, account_to, amount) "
+                + "VALUES (?,?,?) RETURNING transfer_id";
+        int id = jdbcTemplate.queryForObject(sql, Integer.class, userFrom, userTo, amount);
+        return getTransferByTransferId(id);
     }
+
+//        return null;
+//    }
+//        else {
+//            String sql = "INSERT INTO transfer (account_from, account_to, amount, transfer_status) "
+//                    + "VALUES (?,?,?,'Rejected') RETURNING transfer_id";
+//            int id = jdbcTemplate.queryForObject(sql, Integer.class, userFrom, userTo, amount);
+//            return getTransferByTransferId(id);
+//        }
+
 
     @Override
     public List<Transfer> getListOfTransfers(int accountId) {
@@ -63,7 +67,6 @@ public class JdbcTransferDao implements TransferDao {
         }
         return transferList;
     }
-
 
 
     private Transfer mapToRowTransfer(SqlRowSet result) {

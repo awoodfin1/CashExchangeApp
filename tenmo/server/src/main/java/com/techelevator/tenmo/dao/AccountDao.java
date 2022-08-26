@@ -10,7 +10,7 @@ public interface AccountDao {
 
     BigDecimal getBalance(int userId);
 
-    boolean transferFunds(Transfer transfer) throws TransferFundsException;
+    void transferFunds(Transfer transfer) throws TransferFundsException;
 
     Account getAnAccountByUserId(int userId);
 

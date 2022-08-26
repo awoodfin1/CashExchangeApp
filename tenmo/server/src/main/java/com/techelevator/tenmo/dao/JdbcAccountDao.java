@@ -35,7 +35,7 @@ public class JdbcAccountDao implements AccountDao {
     }
 
     @Override
-    public boolean transferFunds(Transfer transfer) throws TransferFundsException {
+    public void transferFunds(Transfer transfer) throws TransferFundsException {
         BigDecimal senderBalance = getBalanceByAccountNumber(transfer.getUserFrom());
         if (transfer.getUserFrom() != transfer.getUserTo() && senderBalance.compareTo(transfer.getAmount()) >= 0) {
             String fromSql = "UPDATE account SET balance = balance - ? WHERE account_id = ?";
@@ -43,7 +43,6 @@ public class JdbcAccountDao implements AccountDao {
             String toSql = "UPDATE account SET balance = balance + ? WHERE account_id = ?";
             jdbcTemplate.update(toSql, transfer.getAmount(), transfer.getUserTo());
         }else throw new TransferFundsException ("Error cannot complete transaction");
-        return false;
     }
 
     public BigDecimal getBalanceByAccountNumber(int accountId) {
