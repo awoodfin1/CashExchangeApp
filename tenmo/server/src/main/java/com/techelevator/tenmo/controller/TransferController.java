@@ -3,6 +3,7 @@ package com.techelevator.tenmo.controller;
 import com.techelevator.tenmo.dao.AccountDao;
 import com.techelevator.tenmo.dao.TransferDao;
 import com.techelevator.tenmo.dao.UserDao;
+import com.techelevator.tenmo.exception.TransferFundsException;
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transfer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class TransferController {
     @Autowired
     TransferDao transferDao;
 
-    @GetMapping("transfer")
+    @GetMapping("/transfer")
     public List<Transfer> getListOfTransfers(Principal principal) {
         String username = principal.getName();
         int userID = userDao.findIdByUsername(username);
@@ -42,8 +43,8 @@ public class TransferController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @RequestMapping(path = "/transfer", method = RequestMethod.POST)
-    public Transfer transferFunds(@RequestBody Transfer transfer) {
+    @RequestMapping(path = "/transfer/sendMoney", method = RequestMethod.POST)
+    public Transfer transferFunds(@RequestBody Transfer transfer) throws TransferFundsException {
         Transfer postedTransfer = transferDao.newTransfer(transfer);
         accountDao.transferFunds(transfer);
         return postedTransfer;

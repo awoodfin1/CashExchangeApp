@@ -9,9 +9,10 @@ public interface TransferDao {
 
     public Transfer getTransferByTransferId(int transferId);
 
-
-
     public Transfer newTransfer(Transfer transfer);
 
+
     public List<Transfer> getListOfTransfers(int accountId);
+
+
 }

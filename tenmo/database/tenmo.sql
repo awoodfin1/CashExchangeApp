@@ -49,7 +49,7 @@ CREATE TABLE transfer
     CONSTRAINT PK_transfer PRIMARY KEY (transfer_id),
     CONSTRAINT FK_transfer_account_from FOREIGN KEY (account_from) REFERENCES account (account_id),
     CONSTRAINT FK_transfers_accounts_to FOREIGN KEY (account_to) REFERENCES account (account_id),
-    CONSTRAINT CK_transfers_not_same_account CHECK  (account_from<>account_to),
+    -- CONSTRAINT CK_transfers_not_same_account CHECK  (account_from<>account_to),
     CONSTRAINT CK_transfers_amount_gt_0 CHECK (amount>0)
 );
 

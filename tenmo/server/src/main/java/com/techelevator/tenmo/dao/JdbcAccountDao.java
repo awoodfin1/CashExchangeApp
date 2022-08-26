@@ -1,5 +1,6 @@
 package com.techelevator.tenmo.dao;
 
+import com.techelevator.tenmo.exception.TransferFundsException;
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transfer;
 import org.springframework.dao.DataAccessException;
@@ -34,14 +35,14 @@ public class JdbcAccountDao implements AccountDao {
     }
 
     @Override
-    public boolean transferFunds(Transfer transfer) {
+    public boolean transferFunds(Transfer transfer) throws TransferFundsException {
         BigDecimal senderBalance = getBalanceByAccountNumber(transfer.getUserFrom());
         if (transfer.getUserFrom() != transfer.getUserTo() && senderBalance.compareTo(transfer.getAmount()) >= 0) {
             String fromSql = "UPDATE account SET balance = balance - ? WHERE account_id = ?";
             jdbcTemplate.update(fromSql, transfer.getAmount(), transfer.getUserFrom());
             String toSql = "UPDATE account SET balance = balance + ? WHERE account_id = ?";
             jdbcTemplate.update(toSql, transfer.getAmount(), transfer.getUserTo());
-        }
+        }else throw new TransferFundsException ("Error cannot complete transaction");
         return false;
     }
 

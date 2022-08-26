@@ -1,5 +1,6 @@
 package com.techelevator.tenmo.dao;
 
+import com.techelevator.tenmo.exception.TransferFundsException;
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transfer;
 
@@ -9,7 +10,7 @@ public interface AccountDao {
 
     BigDecimal getBalance(int userId);
 
-    boolean transferFunds(Transfer transfer);
+    boolean transferFunds(Transfer transfer) throws TransferFundsException;
 
     Account getAnAccountByUserId(int userId);
 
