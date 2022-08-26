@@ -29,8 +29,9 @@ public class Transfer {
         return userFrom;
     }
 
-    public void setUserFrom(int userFrom) {
+    public int setUserFrom(int userFrom) {
         this.userFrom = userFrom;
+        return userFrom;
     }
 
     public int getUserTo() {

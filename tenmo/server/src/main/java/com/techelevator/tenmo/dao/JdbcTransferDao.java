@@ -4,10 +4,11 @@ import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transfer;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.List;
-
+@Component
 public class JdbcTransferDao implements TransferDao {
 
     private JdbcTemplate jdbcTemplate;
@@ -28,15 +29,14 @@ public class JdbcTransferDao implements TransferDao {
     }
 
     @Override
-    public boolean transferFunds(Transfer transfer, int userSendId, int userReceiveId) {
-        BigDecimal transferAmount = new BigDecimal(String.valueOf(transfer.getAmount()));
+    public boolean transferFunds(BigDecimal amount, int userSendId, int userReceiveId) {
         String sql = "SELECT user_id FROM tenmo_user WHERE username = ?";
         Integer senderId = jdbcTemplate.queryForObject(sql, Integer.class);
         if (!senderId.equals(senderId)) {
             String fromSql = "UPDATE account SET balance = balance - ? WHERE user_id = ?";
-            jdbcTemplate.update(fromSql, transferAmount, userSendId);
+            jdbcTemplate.update(fromSql, amount, userSendId);
             String toSql = "UPDATE account SET balance = balance + ? WHERE user_id = ?";
-            jdbcTemplate.update(toSql, transferAmount, userReceiveId);
+            jdbcTemplate.update(toSql, amount, userReceiveId);
         }
         return false;
     }
@@ -44,10 +44,13 @@ public class JdbcTransferDao implements TransferDao {
 
     @Override
     public Transfer newTransfer(Transfer transfer) {
-        
-        String sql = "INSERT INTO transfer (account_from, account_to, amount) VALUES (?, ?, ?) RETURNING transfer_id";
-
-        return null;
+        int userFrom = transfer.getUserFrom();
+        int userTo = transfer.getUserTo();
+        BigDecimal amount = transfer.getAmount();
+        String sql = "INSERT INTO transfer (account_from, account_to, amount) "
+        + "VALUES (?,?,?) RETURNING transfer_id";
+        int id = jdbcTemplate.queryForObject(sql, Integer.class, userFrom, userTo, amount);
+        return getTransferByTransferId(id);
     }
 
     @Override

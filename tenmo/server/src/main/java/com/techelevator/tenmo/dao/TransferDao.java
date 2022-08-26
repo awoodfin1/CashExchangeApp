@@ -9,9 +9,9 @@ public interface TransferDao {
 
     public Transfer getTransferByTransferId(int transferId);
 
-    boolean transferFunds(Transfer transfer, int userSendId, int userReceiveId);
+    boolean transferFunds(BigDecimal amount, int userSendId, int userReceiveId);
 
-    public Transfer newTransfer(int userFrom, int userTo, BigDecimal amount);
+    public Transfer newTransfer(Transfer transfer);
 
     public List<Transfer> getListOfTransfers(int accountId);
 }

@@ -71,4 +71,4 @@ COMMIT;
 
 --  UPDATE account SET balance = balance - 2 WHERE account_id = 2002;
 --
--- select * from account
+select
