@@ -7,6 +7,7 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -26,12 +27,11 @@ public class JdbcTransferDao implements TransferDao {
         Transfer transfer = null;
         if (result.next()) {
             transfer = mapToRowTransfer(result);
+        }else {
+            throw new RuntimeException("Transfer not found.");
         }
         return transfer;
     }
-
-
-
 
     @Override
     public Transfer newTransfer(Transfer transfer) {
@@ -46,7 +46,14 @@ public class JdbcTransferDao implements TransferDao {
 
     @Override
     public List<Transfer> getListOfTransfers(int accountId) {
-        return null;
+        List<Transfer> transferList = new ArrayList<>();
+        String sql = "SELECT * FROM transfer JOIN account a on a.account_id = transfer.account_from" +
+                " WHERE account_id = ?";
+        SqlRowSet results = this.jdbcTemplate.queryForRowSet(sql, accountId);
+        while (results.next()) {
+            transferList.add(mapToRowTransfer(results));
+        }
+        return transferList;
     }
 
     private Transfer mapToRowTransfer(SqlRowSet result) {

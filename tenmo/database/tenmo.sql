@@ -45,6 +45,7 @@ CREATE TABLE transfer
     account_from int            NOT NULL,
     account_to   int            NOT NULL,
     amount       decimal(13, 2) NOT NULL,
+    transfer_status varchar(20) DEFAULT ('Approved'),
     CONSTRAINT PK_transfer PRIMARY KEY (transfer_id),
     CONSTRAINT FK_transfer_account_from FOREIGN KEY (account_from) REFERENCES account (account_id),
     CONSTRAINT FK_transfers_accounts_to FOREIGN KEY (account_to) REFERENCES account (account_id),
